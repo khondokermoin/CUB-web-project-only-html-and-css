@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CSS Storybook — One Page (HTML + CSS)</title>
+    <style>
+      /* -------------------------
+     CSS Storybook — styles
+     Only HTML + CSS
+     -------------------------*/
+      :root {
+        --bg: #0f1724;
+        --card: #0b1220;
+        --muted: #9aa8c3;
+        --accent: #f59e0b;
+        --glass: rgba(255, 255, 255, 0.04);
+        --maxw: 1000px;
+        --radius: 14px;
+        --ff: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--ff);
+        color: #e6eef8;
+        background: linear-gradient(
+          180deg,
+          rgba(10, 14, 24, 1) 0%,
+          rgba(6, 10, 16, 1) 100%
+        );
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.45;
+      }
+
+      .wrap {
+        max-width: var(--maxw);
+        margin: 32px auto;
+        padding: 28px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), #ff7a18);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: #0b1220;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+        font-family: Georgia, serif;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      p.lead {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      nav {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      nav a {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: transparent;
+        border: 1px solid transparent;
+      }
+      nav a:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.04);
+        background: var(--glass);
+      }
+
+      main.story {
+        margin-top: 24px;
+        display: grid;
+        gap: 28px;
+      }
+
+      /* Story chapter card */
+      .chapter {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: var(--radius);
+        padding: 18px;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 18px;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(2, 6, 12, 0.6);
+      }
+
+      .chapter .text h2 {
+        margin: 0 0 6px;
+        font-size: 18px;
+      }
+      .chapter .text p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* image panel with clip-path & subtle motion */
+      .thumb {
+        width: 100%;
+        height: 220px;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background: linear-gradient(135deg, #0b1220, #112036);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.05);
+        transition: transform 0.9s ease;
+      }
+      .chapter:hover .thumb img {
+        transform: scale(1.12) rotate(0.6deg);
+      }
+      .thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 30%,
+          rgba(0, 0, 0, 0.3)
+        );
+      }
+
+      /* CSS-only accordion for "Read more" using checkbox hack */
+      .more {
+        margin-top: 12px;
+      }
+      .more input {
+        display: none;
+      }
+      .more label {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--accent);
+      }
+      .more .panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.6s ease;
+        color: var(--muted);
+        margin-top: 10px;
+      }
+      .more input:checked ~ .panel {
+        max-height: 400px;
+        padding-right: 6px;
+      }
+
+      /* timeline dots */
+      .dot {
+        position: absolute;
+        left: -12px;
+        top: 20px;
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.06);
+      }
+
+      /* small screens: stack */
+      @media (max-width: 880px) {
+        .chapter {
+          grid-template-columns: 1fr;
+          padding: 14px;
+        }
+        .thumb {
+          height: 180px;
+        }
+      }
+
+      /* fancy entrance animation when section is in view using :target trick
+     (you can link to #c2 to highlight chapter 2 etc) */
+      .chapter {
+        transform: translateY(10px);
+        opacity: 0.98;
+        transition: transform 0.6s ease, box-shadow 0.3s ease;
+      }
+      .chapter:target {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      }
+      /* small decorative headings */
+      .meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      /* footer / presentation tips */
+      footer {
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 14px;
+        border-radius: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.005)
+        );
+      }
+
+      /* print friendly */
+      @media print {
+        body {
+          background: white;
+          color: black;
+        }
+        .chapter {
+          box-shadow: none;
+          background: transparent;
+        }
+        nav,
+        footer,
+        .logo {
+          display: none;
+        }
+      }
+
+      /* tiny responsive niceties */
+      .tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .tag {
+        font-size: 12px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="logo">B</div>
+        <div>
+          <h1>CSS Storybook — One Page</h1>
+          <p class="lead">
+            শুধুমাত্র HTML এবং CSS দিয়ে তৈরি একটি ইন্টার‌্যাকটিভ
+            গল্প/প্রেজেন্টেশন
+          </p>
+          <nav>
+            <a href="#c1">প্রারম্ভ</a>
+            <a href="#c2">মধ্যভাগ</a>
+            <a href="#c3">উপসংহার</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="story">
+        <section id="c1" class="chapter">
+          <span class="dot" title="chapter 1"></span>
+          <div class="text">
+            <div class="meta">অধ্যায় ১ • শুরু</div>
+            <h2>একটি অচেনা সকালে</h2>
+            <p>
+              রোদ ও কিশোরীর এক ছোট বাসা — জানালার কাঁচে পড়ে থাকা রংগুলো আলাদা
+              গল্প বলে। তার চোখে ছিল অপেক্ষার টান; সে জানত আজ কোনো পরিবর্তন
+              ঘটবে।
+            </p>
+
+            <div class="more">
+              <input type="checkbox" id="m1" />
+              <label for="m1">Read more</label>
+              <div class="panel">
+                <p>
+                  এই অংশে তিলে তিলে CSS দিয়ে উপস্থাপন করা হয়েছে: সেকশন
+                  ট্রান্সফরম, হোভার এনিমেশন, এবং क्लিপ-পাথ স্টাইলড ইমেজ প্যানেল।
+                </p>
+                <div class="tags">
+                  <span class="tag">#intro</span>
+                  <span class="tag">#css-animations</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="thumb" aria-hidden="true">
+            <!-- replace src with your image -->
+            <img
+              alt="morning"
+              src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=000000"
+            />
+          </div>
+        </section>
+
+        <section id="c2" class="chapter">
+          <span class="dot" title="chapter 2"></span>
+          <div class="text">
+            <div class="meta">অধ্যায় ২ • সিদ্ধান্ত</div>
+            <h2>অপেক্ষার পরে অপার সম্ভাবনা</h2>
+            <p>
+              সে জানল যে সিদ্ধান্ত নিতে হবে; ছোট পদক্ষেপগুলোই বড় পরিবর্তন আনবে।
+              এখানে কাহিনীর মধ্যভাগে রঙ ও টাইপোগ্রাফি দিয়ে আবহ তৈরি করা হয়েছে।
+            </p>
+
+            <div class="more">
+              <input type="checkbox" id="m2" />
+              <label for="m2">আরও দেখো</label>
+              <div class="panel">
+                <p>
+                  অধ্যায়ে ইউজড CSS টেকনিক: :target, checkbox-hack, responsive
+                  grid, এবং subtle shadows।
+                </p>
+                <div class="tags">
+                  <span class="tag">#decision</span>
+                  <span class="tag">#pure-css</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="thumb" aria-hidden="true">
+            <img
+              alt="bridge"
+              src="https://images.unsplash.com/photo-1493558103817-58b2924bce98?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=000000"
+            />
+          </div>
+        </section>
+
+        <section id="c3" class="chapter">
+          <span class="dot" title="chapter 3"></span>
+          <div class="text">
+            <div class="meta">অধ্যায় ৩ • উপসংহার</div>
+            <h2>একটি নতুন পথ</h2>
+            <p>
+              শেষটা মিশে আছে নতুন সূর্যের রঙে — ছোট ছোট সিদ্ধান্তই গড়ে তোলে বড়
+              ভবিষ্যৎ।
+            </p>
+
+            <div class="more">
+              <input type="checkbox" id="m3" />
+              <label for="m3">সংক্ষিপ্ত টেকনিক্যাল নোটস</label>
+              <div class="panel">
+                <p>
+                  এই প্রজেক্টে দেখানো হয়েছে: responsive layout, css-only
+                  interactivity, print-styles, এবং কিভাবে আপনি CSS দিয়ে
+                  storytelling করতে পারেন।
+                </p>
+                <div class="tags">
+                  <span class="tag">#conclusion</span>
+                  <span class="tag">#presentation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="thumb" aria-hidden="true">
+            <img
+              alt="sunset"
+              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=000000"
+            />
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        Presentation tips: পরীক্ষার সময় ডেমো চালিয়ে বলবে— "এই প্রজেক্টে
+        JavaScript ব্যবহার করা হয়নি; শুধুই HTML ও CSS দিয়ে ইন্টার‌্যাকশন এবং
+        অ্যানিমেশন করা হয়েছে।" <br />
+        আপনি চাইলে আমি এই টেমপ্লেটকে আরো রঙিন/ইমেজ-চেঞ্জ/অ্যাডিশনাল চার্ট-এড করে
+        দেবো।
+      </footer>
+    </div>
+  </body>
+</html>

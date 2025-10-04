@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+#planet1 {
+  background: linear-gradient(135deg, #1d1b2f, #2e2a47);
+  background-attachment: fixed;
+  color: white;
+}
+
+#planet2 {
+  background: linear-gradient(135deg, #4a4e69, #22223b);
+  background-attachment: fixed;
+  color: white;
+}
+
+#planet3 {
+  background: linear-gradient(135deg, #9a8c98, #c9ada7);
+  background-attachment: fixed;
+  color: black;
+}
+
+#planet4 {
+  background: linear-gradient(135deg, #e9c46a, #f1faee);
+  background-attachment: fixed;
+  color: black;
+}
+
+.planet-title {
+  font-size: 3rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+.description {
+  font-size: 1.5rem;
+  z-index: 10;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Parallax Effect */
+#planet1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://via.placeholder.com/1920x1080"); /* Replace with your galaxy image */
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+  transform: translateZ(-1px) scale(2);
+}
+
+#planet2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://via.placeholder.com/1920x1080"); /* Replace with your planet image */
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+  transform: translateZ(-2px) scale(2);
+}
+
+#planet3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://via.placeholder.com/1920x1080"); /* Replace with your space image */
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+  transform: translateZ(-3px) scale(2);
+}
+
+#planet4::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://via.placeholder.com/1920x1080"); /* Replace with your lava planet image */
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+  transform: translateZ(-4px) scale(2);
+}

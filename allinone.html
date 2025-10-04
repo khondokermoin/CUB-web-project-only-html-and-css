@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Web Design Project | Built with Pure HTML & CSS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- Base & Global Styles --- */
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        color: #1f2937; /* text-gray-800 */
+        /* Animated Background */
+        background: linear-gradient(-45deg, #e0e7ff, #c7d2fe, #a5b4fc, #6366f1);
+        background-size: 400% 400%;
+        animation: gradientAnimation 15s ease infinite;
+      }
+
+      @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      h2 {
+        font-size: 1.875rem; /* text-3xl */
+        font-weight: 700; /* font-bold */
+        text-align: center;
+        margin-bottom: 1.5rem; /* mb-6 */
+      }
+
+      h3 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        margin-bottom: 0.5rem; /* mb-2 */
+      }
+
+      h4 {
+        font-weight: 600; /* font-semibold */
+        margin-bottom: 0.25rem;
+      }
+
+      button {
+        width: 100%;
+        font-weight: 700; /* font-bold */
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem; /* rounded-lg */
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .primary-button {
+        background-color: #4f46e5; /* bg-indigo-600 */
+        color: white;
+      }
+      .primary-button:hover {
+        background-color: #4338ca; /* hover:bg-indigo-700 */
+      }
+
+      .secondary-button {
+        background-color: #e5e7eb; /* bg-gray-200 */
+        color: #1f2937;
+      }
+      .secondary-button:hover {
+        background-color: #d1d5db; /* hover:bg-gray-300 */
+      }
+
+      section,
+      .sidebar-card {
+        background-color: white;
+        border-radius: 0.5rem; /* rounded-lg */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+        padding: 2rem;
+      }
+
+      /* --- Layout --- */
+      .page-wrapper {
+        max-width: 80rem; /* max-w-7xl */
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem; /* space-y-12 */
+      }
+
+      /* --- Header & Navigation --- */
+      .header {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(4px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+        border-radius: 0.5rem; /* rounded-lg */
+        margin: 1rem 0;
+        padding: 1rem;
+        position: sticky;
+        top: 1rem;
+        z-index: 50;
+      }
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        color: #4f46e5; /* text-indigo-600 */
+      }
+      .main-nav {
+        display: none; /* hidden on mobile */
+        align-items: center;
+      }
+      .main-nav a {
+        color: #374151; /* text-gray-700 */
+        font-weight: 600; /* font-semibold */
+        text-decoration: none;
+        margin-left: 1rem; /* space-x-4 */
+      }
+      .main-nav a:hover {
+        color: #4f46e5; /* hover:text-indigo-600 */
+      }
+      .mobile-menu-icon {
+        font-size: 1.5rem;
+      }
+
+      /* --- Photo Gallery --- */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 0.5rem;
+        transition: transform 0.4s ease-in-out;
+      }
+
+      .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+        padding: 1rem;
+        box-sizing: border-box;
+      }
+
+      .gallery-caption h3 {
+        font-size: 1.25rem;
+        margin: 0;
+        transform: translateY(10px);
+        transition: transform 0.4s ease-in-out;
+      }
+
+      .gallery-caption p {
+        margin: 0.5rem 0 0 0;
+        transform: translateY(10px);
+        transition: transform 0.4s 0.1s ease-in-out;
+      }
+
+      .gallery-item:hover .gallery-caption {
+        opacity: 1;
+      }
+
+      .gallery-item:hover .gallery-caption h3,
+      .gallery-item:hover .gallery-caption p {
+        transform: translateY(0);
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+
+      /* --- Pricing Table --- */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 56rem; /* max-w-4xl */
+        margin: 0 auto;
+      }
+      .pricing-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        background-color: #f9fafb; /* bg-gray-50 */
+      }
+      .pricing-card-highlighted {
+        border-width: 4px;
+        border-color: #4f46e5; /* border-indigo-600 */
+        position: relative;
+        background-color: white;
+      }
+      .pricing-card .price {
+        font-size: 2.25rem; /* text-4xl */
+        font-weight: 700; /* font-bold */
+        margin-bottom: 1rem;
+      }
+      .pricing-card .price span {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 400; /* font-normal */
+        color: #6b7280; /* text-gray-500 */
+      }
+      .pricing-card ul {
+        list-style: none;
+        padding: 0;
+        color: #4b5563; /* text-gray-600 */
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+      }
+      .pricing-card li {
+        margin-bottom: 0.5rem; /* space-y-2 */
+      }
+      .popular-badge {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #4f46e5; /* bg-indigo-600 */
+        color: white;
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px; /* rounded-full */
+      }
+
+      /* --- Contact Form --- */
+      .contact-form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .contact-form label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.25rem;
+      }
+      .contact-form input,
+      .contact-form textarea {
+        display: block;
+        width: 100%;
+        border-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        padding: 0.75rem;
+        font-size: 1rem;
+        box-sizing: border-box;
+        background-color: #f9fafb;
+      }
+      .contact-form textarea {
+        height: 150px;
+        resize: none;
+      }
+      .contact-form input:focus,
+      .contact-form textarea:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 2px #a5b4fc;
+        background-color: white;
+      }
+      .input-wrapper {
+        position: relative;
+      }
+      .input-wrapper svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: #9ca3af;
+        pointer-events: none;
+      }
+      .contact-form .has-icon {
+        padding-left: 2.75rem;
+      }
+      .contact-form .primary-button {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background-image: linear-gradient(to right, #4f46e5, #6366f1);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .contact-form .primary-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* --- Team Cards --- */
+      .team-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .team-card {
+        background-color: #f9fafb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .team-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 auto 1rem auto;
+        border: 3px solid #c7d2fe;
+      }
+      .team-card h3 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+      .team-card .team-id {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin: 0.25rem 0 0.75rem 0;
+      }
+      .team-card .team-description {
+        font-size: 0.875rem;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+
+      /* --- About Section --- */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+      .about-image img {
+        width: 100%;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .about-content h2 {
+        text-align: left;
+      }
+      .about-intro {
+        font-size: 1.125rem;
+        color: #4b5563;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+      }
+      .features-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .feature-item .icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        background-color: #e0e7ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .feature-item .icon svg {
+        width: 24px;
+        height: 24px;
+        color: #4f46e5;
+      }
+      .feature-item p {
+        margin: 0;
+        color: #6b7280;
+      }
+
+      /* --- Footer --- */
+      footer {
+        text-align: center;
+        color: #1f2937;
+        padding: 2rem 0;
+        margin-top: 2rem;
+      }
+
+      /* --- Modal Window --- */
+      .modal {
+        visibility: hidden;
+        opacity: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.7);
+        transition: all 0.4s;
+        z-index: 999;
+      }
+      .modal:target {
+        visibility: visible;
+        opacity: 1;
+      }
+      .modal-content {
+        position: relative;
+        width: 500px;
+        max-width: 90%;
+        background: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+      }
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        color: #555;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .modal-close:hover {
+        color: #333;
+      }
+
+      /* --- Responsive Design --- */
+      @media (min-width: 768px) {
+        .page-wrapper {
+          padding: 0 1.5rem;
+        }
+        .main-nav {
+          display: flex;
+        }
+        .mobile-menu-icon {
+          display: none;
+        }
+        .gallery-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .pricing-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .contact-form {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .form-field-full-width {
+          grid-column: 1 / -1;
+        }
+        .team-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .about-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .page-wrapper {
+          padding: 0 2rem;
+        }
+        .team-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">Component Showcase</div>
+          <nav class="main-nav">
+            <a href="#gallery">Gallery</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#team">Team</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <div class="mobile-menu-icon">&#9776;</div>
+        </div>
+      </header>
+
+      <main>
+        <section id="gallery">
+          <h2>Photo Gallery with Overlay Effect</h2>
+          <div class="gallery-grid">
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/nature/600/400"
+                alt="Lush purple mountains"
+              />
+              <figcaption class="gallery-caption">
+                <h3>Vibrant Landscapes</h3>
+                <p>Discover breathtaking views and serene natural beauty.</p>
+              </figcaption>
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/architecture/600/400"
+                alt="Modern orange building"
+              />
+              <figcaption class="gallery-caption">
+                <h3>Modern Architecture</h3>
+                <p>Clean lines and innovative structural forms.</p>
+              </figcaption>
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/travel/600/400"
+                alt="Teal colored travel map"
+              />
+              <figcaption class="gallery-caption">
+                <h3>World Travel</h3>
+                <p>Embark on unforgettable journeys across the globe.</p>
+              </figcaption>
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/food/600/400"
+                alt="Delicious pink frosted donut"
+              />
+              <figcaption class="gallery-caption">
+                <h3>Gourmet Food</h3>
+                <p>Exquisite dishes crafted with passion and flair.</p>
+              </figcaption>
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/city/600/400"
+                alt="Green city park aerial view"
+              />
+              <figcaption class="gallery-caption">
+                <h3>City Life</h3>
+                <p>Experience the vibrant energy of urban cityscapes.</p>
+              </figcaption>
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="https://picsum.photos/seed/abstract/600/400"
+                alt="Blue abstract shapes"
+              />
+              <figcaption class="gallery-caption">
+                <h3>Abstract Art</h3>
+                <p>A journey into color, shape, and imagination.</p>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="pricing">
+          <h2>Pricing Table</h2>
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <h3>Basic</h3>
+              <p class="price">$10<span>/mo</span></p>
+              <ul>
+                <li>1 Project</li>
+                <li>10 GB Storage</li>
+                <li>Basic Support</li>
+              </ul>
+              <button class="secondary-button">Choose Plan</button>
+            </div>
+            <div class="pricing-card pricing-card-highlighted">
+              <div class="popular-badge">MOST POPULAR</div>
+              <h3>Pro</h3>
+              <p class="price">$25<span>/mo</span></p>
+              <ul>
+                <li>10 Projects</li>
+                <li>100 GB Storage</li>
+                <li>Priority Support</li>
+              </ul>
+              <button class="primary-button">Choose Plan</button>
+            </div>
+            <div class="pricing-card">
+              <h3>Enterprise</h3>
+              <p class="price">$50<span>/mo</span></p>
+              <ul>
+                <li>Unlimited Projects</li>
+                <li>1 TB Storage</li>
+                <li>24/7 Support</li>
+              </ul>
+              <button class="secondary-button">Choose Plan</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="team">
+          <h2>Meet the Team</h2>
+          <div class="team-grid">
+            <div class="team-card">
+              <img
+                src="https://2.gravatar.com/avatar/eee88b67fdb1652642c9e843b76eafdb764f137cd4d6f8f6e0f2c468d1ec26f4?size=256&d=initials"
+                alt="Khondoker Moin Hossain Photo"
+              />
+              <h3>Khondoker Moin Hossain</h3>
+              <p class="team-id">ID: 25205010</p>
+              <p class="team-description">
+                Designed and developed the full website using HTML and CSS.
+                Focused on responsive layout, color balance, and usability to
+                create a modern, user-friendly web experience.
+              </p>
+            </div>
+
+            <div class="team-card">
+              <img
+                src="https://scontent.fdac191-1.fna.fbcdn.net/v/t39.30808-1/456516193_1901175407062751_3955800435987966049_n.jpg?stp=dst-jpg_p100x100_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_ohc=RUUdJR8JmxsQ7kNvwGHip5x&_nc_oc=AdkmGA-UPgVq02SVSpOIowO6W2LIzGegyGMjeGmIWbMWP9PY7AJCJ-NoS8K-Q_9vPaQ&_nc_zt=24&_nc_ht=scontent.fdac191-1.fna&_nc_gid=HLjHMTHV34spgDmxZXaQXg&oh=00_Afez7aiuzAedzw9EtK1CZitdQGcU1i99qIOH-lOBfhj7_Q&oe=68E72E73"
+                alt="Shafayet Nur Shihab photo"
+              />
+              <h3>Shafayet Nur Shihab</h3>
+              <p class="team-id">ID: 25205005</p>
+              <p class="team-description">
+                Assisted in understanding and explaining various parts of the
+                developed website. Helped team members by clarifying design flow
+                and technical details for accurate project documentation.
+              </p>
+            </div>
+
+            <div class="team-card">
+              <img
+                src="https://scontent.fdac191-1.fna.fbcdn.net/v/t39.30808-6/481978269_1358071125330096_1555379737123811595_n.jpg?stp=cp6_dst-jpg_s720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=bkDHXqKU3VkQ7kNvwEpK9T-&_nc_oc=Adm8MuP1SFZSkNPhQL9nTELf5bSp_OTuPw82auhWgXXGGeXOqtWTY2iEPDHJNjuUk2Y&_nc_zt=23&_nc_ht=scontent.fdac191-1.fna&_nc_gid=62OUzb-OhAkPFPW7KqvV4Q&oh=00_AfcgcWBJQmsFmYH1PHSn33tVAJFdsYrpmsbI2MJ8AA3fWA&oe=68E73D07"
+                alt="Sanchari banik Sharmi Photo"
+              />
+              <h3>Sanchari banik Sharmi</h3>
+              <p class="team-id">ID: 25205016</p>
+              <p class="team-description">
+                Contributed to the project report, summarizing technical and
+                design aspects. Focused on documenting structure, process, and
+                features of the website built by the development team.
+              </p>
+            </div>
+
+            <div class="team-card">
+              <img
+                src="https://scontent.fdac191-1.fna.fbcdn.net/v/t39.30808-1/481655566_1137022104784701_1831483545845353357_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=1d2534&_nc_ohc=yWkzECs6vikQ7kNvwEqFMYm&_nc_oc=Adl4kui3whETaPeb4KiFbdmXN6i0k4MsOoa3Hwv2n0QDknjStZc3rWnMECoJegV-JqA&_nc_zt=24&_nc_ht=scontent.fdac191-1.fna&_nc_gid=eHtdpbnE2y_385cNwgxupQ&oh=00_AfcdqInGUFLvKZ9GgDMB2IDXBlLO6_fomqDUIqBSsLmj4A&oe=68E74680"
+                alt="Tanmoy Chandro Ray photo"
+              />
+              <h3>Tanmoy Chandro Ray</h3>
+              <p class="team-id">ID: 25205017</p>
+              <p class="team-description">
+                Worked on the project report and documentation. Focused on
+                presenting the website’s purpose, features, and workflow
+                clearly, ensuring the report matched the actual implementation.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== UPDATED ABOUT SECTION ===== -->
+        <section id="about">
+          <div class="about-grid">
+            <div class="about-content">
+              <h2>The Art of Pure CSS</h2>
+              <p class="about-intro">
+                Welcome to a showcase designed to challenge one simple question:
+                What's possible with just HTML and CSS? This entire website,
+                from its animated background to its interactive elements, is a
+                living answer. It was built as both a technical demonstration
+                and an educational tool to celebrate the power and elegance of
+                modern CSS.
+              </p>
+              <div class="features-list">
+                <div class="feature-item">
+                  <div class="icon">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>100% JavaScript-Free</h4>
+                    <p>
+                      Every animation, transition, and layout is handled by CSS,
+                      proving that complex interactivity doesn't always require
+                      scripting.
+                    </p>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <div class="icon">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Fully Responsive Layouts</h4>
+                    <p>
+                      Using CSS Grid and Flexbox, every component, from the
+                      gallery to the forms, adapts beautifully to any screen
+                      size.
+                    </p>
+                  </div>
+                </div>
+                <div class="feature-item">
+                  <div class="icon">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Creative User Interactions</h4>
+                    <p>
+                      Discover clever CSS tricks, like the gallery's hover
+                      overlays and the modal window powered by the `:target`
+                      pseudo-class.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="about-image">
+              <img
+                src="https://picsum.photos/seed/design/800/600"
+                alt="Abstract image of design tools"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <h2>Get in Touch</h2>
+          <p
+            style="
+              text-align: center;
+              margin-top: -1rem;
+              margin-bottom: 2rem;
+              color: #6b7280;
+            "
+          >
+            Have a question or want to work together? Drop a line below.
+          </p>
+          <form action="#" class="contact-form">
+            <div class="form-field">
+              <label for="name">Name</label>
+              <div class="input-wrapper">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path>
+                </svg>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Khondoker Moin Hossain"
+                  class="has-icon"
+                />
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="email">Email</label>
+              <div class="input-wrapper">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="moin2k25@gmail.com"
+                  class="has-icon"
+                />
+              </div>
+            </div>
+            <div class="form-field form-field-full-width">
+              <label for="subject">Subject</label>
+              <div class="input-wrapper">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  ></path>
+                </svg>
+                <input
+                  type="text"
+                  id="subject"
+                  placeholder="Question about pricing"
+                  class="has-icon"
+                />
+              </div>
+            </div>
+            <div class="form-field form-field-full-width">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                placeholder="Your message here..."
+              ></textarea>
+            </div>
+            <div class="form-field form-field-full-width">
+              <button type="submit" class="primary-button">Send Message</button>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          &copy; 2025 Component Showcase | All rights reserved | DevMark Moin
+          Lab
+        </p>
+      </footer>
+    </div>
+
+    <div id="modal-window" class="modal">
+      <div class="modal-content">
+        <a href="#" class="modal-close" title="Close">&times;</a>
+        <h2>Modal Window</h2>
+        <p>
+          This is a pure CSS modal window. It appears when the button is clicked
+          by using the `:target` pseudo-class. No JavaScript is needed for this
+          basic functionality!
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
